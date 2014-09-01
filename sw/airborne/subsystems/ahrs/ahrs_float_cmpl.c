@@ -57,11 +57,6 @@
 #warning "Using magnetometer _and_ GPS course to update heading. Probably better to <configure name="USE_MAGNETOMETER" value="0"/> if you want to use GPS course."
 #endif
 
-#ifndef AHRS_PROPAGATE_FREQUENCY
-#define AHRS_PROPAGATE_FREQUENCY PERIODIC_FREQUENCY
-#endif
-PRINT_CONFIG_VAR(AHRS_PROPAGATE_FREQUENCY)
-
 #ifndef AHRS_CORRECT_FREQUENCY
 #define AHRS_CORRECT_FREQUENCY AHRS_PROPAGATE_FREQUENCY
 #endif
@@ -227,7 +222,7 @@ void ahrs_align(void) {
 }
 
 
-void ahrs_propagate(void) {
+void ahrs_propagate(float dt) {
 
   /* converts gyro to floating point */
   struct FloatRates gyro_float;
@@ -248,7 +243,6 @@ void ahrs_propagate(void) {
   /* and zeros it */
   FLOAT_RATES_ZERO(ahrs_impl.rate_correction);
 
-  const float dt = 1./AHRS_PROPAGATE_FREQUENCY;
 #if AHRS_PROPAGATE_RMAT
   FLOAT_RMAT_INTEGRATE_FI(ahrs_impl.ltp_to_imu_rmat, omega, dt);
   float_rmat_reorthogonalize(&ahrs_impl.ltp_to_imu_rmat);
