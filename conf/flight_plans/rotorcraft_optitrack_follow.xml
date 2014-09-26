@@ -1,19 +1,18 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
 
-
-<flight_plan alt="148" ground_alt="147" lat0="51.990634" lon0="4.376771" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="0.1">
+<flight_plan alt="1.5" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="15" name="Vision_drone_follow" security_height="0.1">
   <header>
-#include "autopilot.h"
   </header>
   <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
-    <waypoint name="CLIMB" x="0.0" y="0.0"/>
-    <waypoint name="STDBY" x="0.0" y="0.0"/>
-    <waypoint name="TD" x="0.0" y="0.0"/>
-    <waypoint lat="51.990639" lon="4.376807" name="p1"/>
-    <waypoint lat="51.990624" lon="4.376767" name="p2"/>
-    <waypoint lat="51.990648" lon="4.376745" name="p3"/>
-    <waypoint lat="51.990663" lon="4.376784" name="p4"/>
+    <waypoint name="CLIMB" x="0.0" y="5.0"/>
+    <waypoint name="STDBY" x="0" y="0"/>
+    <waypoint name="GOAL" x="0" y="2.5"/>
+    <waypoint name="TD" x="5.6" y="-10.9"/>
+    <waypoint name="W0" x="5.6" y="-10.9"/>
+    <waypoint name="W1" x="5.6" y="-10.9"/>
+    <waypoint name="last_wp" x="0" y="0"/>
+    <waypoint name="route_START" x="5.6" y="-10.9"/>
     <waypoint lat="51.990635" lon="4.376836" name="FA1"/>
     <waypoint lat="51.990606" lon="4.376760" name="FA2"/>
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
@@ -33,11 +32,7 @@
       <while cond="!GpsFixValid()"/>
     </block>
     <block name="Geo init">
-      <while cond="LessThan(NavBlockTime(), 10)"/>
-      <call fun="NavSetWaypointHere(WP_HOME)"/>
-      <call fun="NavSetWaypointHere(WP_CLIMB)"/>
-      <call fun="NavSetWaypointHere(WP_STDBY)"/>
-      <call fun="NavSetWaypointHere(WP_TD)"/>
+      <while cond="LessThan(NavBlockTime(), 2)"/>
       <call fun="NavSetAltitudeReferenceHere()"/>
     </block>
     <block name="Holding point">
@@ -46,35 +41,17 @@
     </block>
     <block name="Start Engine">
       <call fun="NavResurrect()"/>
-      <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
+      
+      <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="stage_time > 1"/>
     </block>
     <block name="Takeoff" strip_button="Takeoff" strip_icon="takeoff.png">
-      <exception cond="stateGetPositionEnu_f()->z > 1.0" deroute="Standby"/>
+      <exception cond="stateGetPositionEnu_f()->z > 1.5" deroute="Standby"/>
       <call fun="NavSetWaypointHere(WP_CLIMB)"/>
-      <stay vmode="climb" climb="0.5" wp="CLIMB"/>
+      <stay climb="0.5" vmode="climb" wp="CLIMB"/>
     </block>
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
+      <call fun="NavSetWaypointHere(WP_STDBY)"/>
       <stay wp="STDBY"/>
-    </block>
-    <block name="stay_p1">
-      <stay wp="p1"/>
-    </block>
-    <block name="go_p2">
-      <call fun="nav_set_heading_deg(90)"/>
-      <go wp="p2"/>
-      <deroute block="stay_p1"/>
-    </block>
-    <block name="line_p1_p2">
-      <go from="p1" hmode="route" wp="p2"/>
-      <stay wp="p2" until="stage_time>10"/>
-      <go from="p2" hmode="route" wp="p1"/>
-      <deroute block="stay_p1"/>
-    </block>
-    <block name="route">
-      <go from="p1" hmode="route" wp="p3"/>
-      <go from="p3" hmode="route" wp="p4"/>
-      <go from="p4" hmode="route" wp="p1"/>
-      <deroute block="stay_p1"/>
     </block>
     <block name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
@@ -83,12 +60,13 @@
       <go wp="TD"/>
     </block>
     <block name="flare">
-      <exception cond="NavDetectGround()" deroute="Holding point"/>
+      <exception cond="NavDetectGround()" deroute="landed"/>
       <exception cond="!nav_is_in_flight()" deroute="landed"/>
       <call fun="NavStartDetectGround()"/>
-      <stay climb="-0.8" vmode="climb" wp="TD"/>
+      <stay climb="-1.0" vmode="climb" wp="TD" until="stage_time > 5"/>
     </block>
     <block name="landed">
+      <call fun="NavKillThrottle()"/>
       <attitude pitch="0" roll="0" throttle="0" vmode="throttle" until="FALSE"/>
     </block>
   </blocks>
