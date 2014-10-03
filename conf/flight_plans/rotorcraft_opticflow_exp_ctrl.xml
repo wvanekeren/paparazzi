@@ -53,10 +53,13 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-
-    <block name="go to height 1">
-      <stay 	alt="1.0" until="stage_time > 5" wp="p1"/>
+    <!-- pre_call="autopilot_set_mode(AP_MODE_OPTIC_FLOW)" -->
+    <block name="Mode 1 3 seconds" pre_call="autopilot_set_mode(AP_MODE_OPTIC_FLOW)">
+      <stay alt="1.0" vmode="alt" until="stage_time > 3" wp="p1"/>
     </block>
+    <block name="Mode 2 20 seconds" pre_call="autopilot_set_mode(AP_MODE_NAV)">
+      <stay alt="1.0" until="stage_time > 20" wp="p1"/>
+    </block>    
     <block name="circle height 1">
       <circle alt="1.0" wp="p1" radius="1" until="stage_time > 20"/>
     </block>

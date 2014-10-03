@@ -120,6 +120,7 @@ PRINT_CONFIG_MSG("Using 2 sec yaw for motor arming")
 PRINT_CONFIG_MSG("Using default AP_MODE_KILL as MODE_STARTUP")
 #endif
 
+/*
 #ifndef UNLOCKED_HOME_MODE
 #if MODE_AUTO1 == AP_MODE_HOME
 #define UNLOCKED_HOME_MODE TRUE
@@ -130,7 +131,7 @@ PRINT_CONFIG_MSG("Enabled UNLOCKED_HOME_MODE since MODE_AUTO2 is AP_MODE_HOME")
 #else
 #define UNLOCKED_HOME_MODE FALSE
 #endif
-#endif
+#endif*/
 
 static void send_alive(void) {
   DOWNLINK_SEND_ALIVE(DefaultChannel, DefaultDevice, 16, MD5SUM);
@@ -383,6 +384,9 @@ void autopilot_set_mode(uint8_t new_autopilot_mode) {
       case AP_MODE_NAV:
         guidance_h_mode_changed(GUIDANCE_H_MODE_NAV);
         break;
+      case AP_MODE_OPTIC_FLOW:
+    	  guidance_h_mode_changed(GUIDANCE_H_MODE_OPTIC_FLOW);
+    	  break;
       default:
         break;
     }
@@ -418,6 +422,7 @@ void autopilot_set_mode(uint8_t new_autopilot_mode) {
       case AP_MODE_RATE_Z_HOLD:
       case AP_MODE_ATTITUDE_Z_HOLD:
       case AP_MODE_HOVER_Z_HOLD:
+      case AP_MODE_OPTIC_FLOW:
         guidance_v_mode_changed(GUIDANCE_V_MODE_HOVER);
         break;
       case AP_MODE_HOME:

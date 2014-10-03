@@ -1173,8 +1173,12 @@
   </message>
 
   <message name="OPTICFLOW_CTRL" id="138">
-    <field name="cmd_phi" type="int32"></field>
-    <field name="cmd_theta" type="int32"></field>
+    <field name="cmd_phi" 	type="int32"></field>
+    <field name="cmd_theta" 	type="int32"></field>
+    <field name="cmd_psi" 	type="int32"></field>
+    <field name="cmd_phi_f" 	type="float"></field>
+    <field name="cmd_theta_f" 	type="float"></field>
+    <field name="cmd_psi_f" 	type="float"></field>    
   </message>
 
   <message name="FILTER_COR" id="139">
@@ -1331,7 +1335,8 @@
     <field name="threshold"   	    type="int32"/>
     <field name="erreur"   	    type="uint32" unit="m/s"/>
     <field name="FPS"               type="float" unit="m/s"/>
-    <field name="h"  		    type="float" unit="m"/>
+    <field name="h_sonar"  		    type="float" unit="m"/>
+    <field name="h_sonar_raw"  		    type="float" unit="m"/>
   </message>
 
   <message name="GUIDANCE_H_REF_INT" id="149">
