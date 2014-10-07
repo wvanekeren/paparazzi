@@ -1320,23 +1320,26 @@
   </message>
 
   <message name="OF_DEBUG" id="148">
-    <field name="Tx"   type="int32" unit="px"/>
-    <field name="Ty"   type="int32" unit="px"/>
-    <field name="Tz"   type="int32" unit="px"/>
+    <field name="Tx"   type="float" unit="px"/>
+    <field name="Ty"   type="float" unit="px"/>
+    <field name="Tz"   type="float" unit="px"/>
     <field name="Vx"   type="float" unit="m/s"/>
     <field name="Vy"   type="float" unit="m/s"/>
     <field name="Vz"   type="float" unit="m/s"/>
     <field name="Vx_filt"   type="float" unit="m/s"/>
     <field name="Vy_filt"   type="float" unit="m/s"/>
     <field name="Vz_filt"   type="float" unit="m/s"/>    
-    <field name="p_corr"   type="float" unit="m/s"/>    
-    <field name="q_corr"   type="float" unit="m/s"/>    
+    <field name="p_corr"    type="float" unit="m/s"/>    
+    <field name="q_corr"    type="float" unit="m/s"/>    
     <field name="percentDetected"   type="int32" unit="m/s"/>
     <field name="threshold"   	    type="int32"/>
     <field name="erreur"   	    type="uint32" unit="m/s"/>
     <field name="FPS"               type="float" unit="m/s"/>
-    <field name="h_sonar"  		    type="float" unit="m"/>
-    <field name="h_sonar_raw"  		    type="float" unit="m"/>
+    <field name="h_sonar"  	    type="float" unit="m"/>
+    <field name="h_sonar_raw"  	    type="float" unit="m"/>
+    <field name="h"  		    type="float" unit="m"/>
+    <field name="msg_id"  	    type="uint8" unit="m"/>
+    <field name="framesskip"  	    type="int32" unit="m"/>
   </message>
 
   <message name="GUIDANCE_H_REF_INT" id="149">
@@ -1952,8 +1955,15 @@
     <field name="V_enu_y"     type="float"/>
     <field name="V_enu_z"     type="float"/>
   </message>
- 
- <!--216 is free -->
+
+  <message name="OF_HIST" id="216">
+    <field name="msg_id"		type="uint8"/>
+    <field name="part_id"		type="uint8"/>
+    <field name="Tp"     		type="int32"/>
+    <field name="erreur"    		type="int32"/>
+    <field name="profilepart" 		type="uint8[]"/>
+  </message>
+
  <!--217 is free -->
  <!--218 is free -->
   <message name="WEATHER" id="219">

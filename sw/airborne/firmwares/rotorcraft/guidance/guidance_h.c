@@ -105,6 +105,9 @@ static void read_rc_setpoint_speed_i(struct Int32Vect2 *speed_sp, bool_t in_flig
 #if PERIODIC_TELEMETRY
 #include "subsystems/datalink/telemetry.h"
 
+
+
+
 static void send_gh(void) {
   struct NedCoor_i* pos = stateGetPositionNed_i();
   DOWNLINK_SEND_GUIDANCE_H_INT(DefaultChannel, DefaultDevice,
@@ -177,6 +180,8 @@ void guidance_h_init(void) {
   guidance_h_vgain = GUIDANCE_H_VGAIN;
   transition_percentage = 0;
   transition_theta_offset = 0;
+  
+  optic_flow_ctrl=0;
 
   gh_ref_init();
 
@@ -368,9 +373,12 @@ void guidance_h_run(bool_t  in_flight) {
         INT32_ANGLE_NORMALIZE(guidance_h_heading_sp);
         /* compute x,y earth commands */
         guidance_h_traj_run(in_flight);
+	
         /* set final attitude setpoint */
-        stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
+	if (optic_flow_ctrl == 0) { 
+	  stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
                                                guidance_h_heading_sp);
+	}
       }
       stabilization_attitude_run(in_flight);
       break;

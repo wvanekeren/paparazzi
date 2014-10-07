@@ -399,7 +399,7 @@ static void ins_update_from_hff(void) {
   ins_impl.ltp_accel.x = ACCEL_BFP_OF_REAL(b2_hff_state.xdotdot);
   ins_impl.ltp_accel.y = ACCEL_BFP_OF_REAL(b2_hff_state.ydotdot);
   ins_impl.ltp_speed.x = SPEED_BFP_OF_REAL(b2_hff_state.xdot);
-  ins_impl.ltp_speed.y = SPEED_BFP_OF_REAL(b2_hff_state.ydot);
+  ins_impl.ltp_speed.y = SPEED_BFP_OF_REAL(b2_hff_state.ydot);O
   ins_impl.ltp_pos.x   = POS_BFP_OF_REAL(b2_hff_state.x);
   ins_impl.ltp_pos.y   = POS_BFP_OF_REAL(b2_hff_state.y);
 }
