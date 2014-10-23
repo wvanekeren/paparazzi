@@ -1,6 +1,6 @@
 <!DOCTYPE flight_plan SYSTEM "flight_plan.dtd">
 
-<flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="1">
+<flight_plan alt="1" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="1">
   <header>
 #include "autopilot.h"
 </header>
@@ -61,16 +61,16 @@
       <stay   alt="1.0" until="stage_time > 5" wp="HOME"/>
     </block>
     <block name="circle height 1">
-      <circle alt="1.0" wp="HOME" radius="0.5" until="stage_time > 40"/>
+      <circle alt="1.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
     </block>
     <block name="circle height 2">
-      <circle alt="2.0" wp="HOME" radius="0.5" until="stage_time > 40"/>
+      <circle alt="2.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
     </block>    
     <block name="circle height 3">
-      <circle alt="3.0" wp="HOME" radius="0.5" until="stage_time > 40"/>
+      <circle alt="3.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
     </block>
     <block name="circle height 4">
-      <circle alt="4.0" wp="HOME" radius="0.5" until="stage_time > 40"/>
+      <circle alt="4.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
     </block>    
 
     <block key="l" name="land here" strip_button="Land Here" strip_icon="land-right.png">

@@ -3,7 +3,7 @@
 <flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="1">
   <header>
 #include "autopilot.h"
-#include "../../../ext/ardrone2_vision/modules/OpticFlowARM/opticflowarm_module.h"
+#include "../../../ext/ardrone2_vision/modules/OpticFlowARM/opticflow_module.h"
 </header>
   <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>
@@ -16,10 +16,9 @@
     <waypoint lat="51.990606" lon="4.376760" name="FA2"/>
     <waypoint lat="51.990652" lon="4.376712" name="FA3"/>
     <waypoint lat="51.990681" lon="4.376791" name="FA4"/>
-    <waypoint lat="51.9906546" lon="4.3767775" name="notext"/>
-    <waypoint lat="51.9906431" lon="4.3767593" name="coarsetext"/>
-    <waypoint lat="51.9906403" lon="4.3767901" name="finetext"/>
-
+    <waypoint lat="51.9906374" lon="4.3767736" alt="2" name="notext"/>
+    <waypoint lat="51.9906575" lon="4.3767805" alt="2" name="coarsetext"/>
+    <waypoint lat="51.9906488" lon="4.3767520" alt="2" name="finetext"/>
   </waypoints>
   <sectors>
     <sector color="red" name="Flight_Area">
@@ -72,12 +71,36 @@
     <!-- pre_call="autopilot_set_mode(AP_MODE_OPTIC_FLOW)" (pre-call might give the problem!)-->
     <block name="Optic Flow Ctrl STOP">
       <call fun="optic_flow_ctrl_stop()"/>
-      <stay alt="1.0" wp="p1"/>
+      <stay alt="2.0" wp="p1"/>
     </block>      
     <block name="Optic Flow Ctrl START">
       <call fun="optic_flow_ctrl_start()"/>
-      <stay alt="1.0" wp="p1"/>
-    </block>       
+      <stay alt="2.0" wp="p1"/>
+    </block> 
+    <block name="stay_notext STOP">
+      <call fun="optic_flow_ctrl_stop()"/>
+      <stay wp="notext"/>
+    </block>
+    <block name="stay_notext START">
+      <call fun="optic_flow_ctrl_start()"/>
+      <stay wp="notext"/>
+    </block>
+    <block name="stay_finetext STOP">
+      <call fun="optic_flow_ctrl_stop()"/>
+      <stay wp="finetext"/>
+    </block>
+    <block name="stay_finetext START">
+      <call fun="optic_flow_ctrl_start()"/>
+      <stay wp="finetext"/>
+    </block>
+    <block name="stay_coarsetext STOP">
+      <call fun="optic_flow_ctrl_stop()"/>
+      <stay wp="coarsetext"/>
+    </block>
+    <block name="stay_coarsetext START">
+      <call fun="optic_flow_ctrl_start()"/>
+      <stay wp="coarsetext"/>
+    </block>  
     <block key="l" name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
     </block>

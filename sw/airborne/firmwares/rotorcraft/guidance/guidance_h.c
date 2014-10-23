@@ -181,8 +181,6 @@ void guidance_h_init(void) {
   transition_percentage = 0;
   transition_theta_offset = 0;
   
-  optic_flow_ctrl=0;
-
   gh_ref_init();
 
 #if PERIODIC_TELEMETRY
@@ -371,15 +369,15 @@ void guidance_h_run(bool_t  in_flight) {
         /* set psi command */
         guidance_h_heading_sp = nav_heading;
         INT32_ANGLE_NORMALIZE(guidance_h_heading_sp);
-        /* compute x,y earth commands */
-        guidance_h_traj_run(in_flight);
 	
-        /* set final attitude setpoint */
-	if (optic_flow_ctrl == 0) { 
+	  /* compute x,y earth commands */
+	  guidance_h_traj_run(in_flight);
+	  
+	  /* set final attitude setpoint */
 	  stabilization_attitude_set_earth_cmd_i(&guidance_h_cmd_earth,
                                                guidance_h_heading_sp);
-	}
       }
+
       stabilization_attitude_run(in_flight);
       break;
 

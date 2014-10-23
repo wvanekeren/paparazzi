@@ -1172,13 +1172,16 @@
     <field name="status" type="uint8" values="UNINIT|RUNNING|LOCKED"/>
   </message>
 
-  <message name="OPTICFLOW_CTRL" id="138">
-    <field name="cmd_phi" 	type="int32"></field>
-    <field name="cmd_theta" 	type="int32"></field>
-    <field name="cmd_psi" 	type="int32"></field>
-    <field name="cmd_phi_f" 	type="float"></field>
-    <field name="cmd_theta_f" 	type="float"></field>
-    <field name="cmd_psi_f" 	type="float"></field>    
+  <message name="OF_CTRL" id="138">
+    <field name="cmd_phi" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="cmd_theta" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="cmd_psi" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="cmd_phi0" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="cmd_theta0" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
+    <field name="cmd_psi0" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>    
+    <field name="pGainHover" type="uint32"/>
+    <field name="iGainHover" type="uint32"/>
+    <field name="dGainHover" type="uint32"/>
   </message>
 
   <message name="FILTER_COR" id="139">
@@ -1326,20 +1329,24 @@
     <field name="Vx"   type="float" unit="m/s"/>
     <field name="Vy"   type="float" unit="m/s"/>
     <field name="Vz"   type="float" unit="m/s"/>
-    <field name="Vx_filt"   type="float" unit="m/s"/>
-    <field name="Vy_filt"   type="float" unit="m/s"/>
-    <field name="Vz_filt"   type="float" unit="m/s"/>    
-    <field name="p_corr"    type="float" unit="m/s"/>    
-    <field name="q_corr"    type="float" unit="m/s"/>    
-    <field name="percentDetected"   type="int32" unit="m/s"/>
+    <field name="Vx_ctrl"   type="float" unit="m/s"/>
+    <field name="Vy_ctrl"   type="float" unit="m/s"/>
+    <field name="Vz_ctrl"   type="float" unit="m/s"/>    
+    <field name="p_corr"    type="float" unit="rad"/>    
+    <field name="q_corr"    type="float" unit="rad"/>    
+    <field name="percentDetected"   type="int32"/>
     <field name="threshold"   	    type="int32"/>
-    <field name="erreur"   	    type="uint32" unit="m/s"/>
-    <field name="FPS"               type="float" unit="m/s"/>
-    <field name="h_sonar"  	    type="float" unit="m"/>
-    <field name="h_sonar_raw"  	    type="float" unit="m"/>
-    <field name="h"  		    type="float" unit="m"/>
-    <field name="msg_id"  	    type="uint8" unit="m"/>
-    <field name="framesskip"  	    type="int32" unit="m"/>
+    <field name="erreur"   	    type="uint32"/>
+    <field name="FPS"               type="float"/>
+    <field name="h_sonar"  	    type="float"/>
+    <field name="h_sonar_raw"  	    type="float"/>
+    <field name="h"  		    type="float"/>
+    <field name="msg_id"  	    type="uint8"/>
+    <field name="framesskip"  	    type="int32"/>
+    <field name="window"  	    type="int32"/>
+    <field name="optic_flow_ctrl"   type="uint8"/>
+    <field name="Ahx"  		    type="float"/>
+    <field name="Ahy"  		    type="float"/>
   </message>
 
   <message name="GUIDANCE_H_REF_INT" id="149">
@@ -1951,20 +1958,32 @@
     <field name="V_body_x"    type="float"/>
     <field name="V_body_y"    type="float"/>
     <field name="V_body_z"    type="float"/>
-    <field name="V_enu_x"     type="float"/>
-    <field name="V_enu_y"     type="float"/>
-    <field name="V_enu_z"     type="float"/>
+    <field name="Vx_filt_corr_rate"     type="float"/>
+    <field name="Vy_filt_corr_rate"     type="float"/>
+    <field name="Vx_filt_corr_angle"     type="float"/>
+    <field name="Vy_filt_corr_angle"     type="float"/>
+    <field name="Vx_compl_m"     type="float"/>
+    <field name="Vy_compl_m"     type="float"/>
+    <field name="Vx_compl_f"     type="float"/>
+    <field name="Vy_compl_f"     type="float"/>
   </message>
 
   <message name="OF_HIST" id="216">
-    <field name="msg_id"		type="uint8"/>
-    <field name="part_id"		type="uint8"/>
-    <field name="Tp"     		type="int32"/>
-    <field name="erreur"    		type="int32"/>
-    <field name="profilepart" 		type="uint8[]"/>
+    <field name="msg_id"	type="uint8"/>
+    <field name="part_id"	type="uint8"/>
+    <field name="T"     	type="float"/>
+    <field name="Tp"     	type="int32"/>
+    <field name="erreur"    	type="uint32"/>
+    <field name="framesskip"   	type="uint32"/>
+    <field name="profilepart" 	type="uint8[]"/>
   </message>
-
- <!--217 is free -->
+  
+  <message name="OF_FLOWCOMP" id="217">
+    <field name="Tx"	 type="float"/>
+    <field name="Ty"	 type="float"/>
+    <field name="T3x"    type="float"/>
+    <field name="T3y"    type="float"/>
+  </message>
  <!--218 is free -->
   <message name="WEATHER" id="219">
     <field name="p_amb" type="float" unit="Pa" alt_unit="mBar" alt_unit_coef="0.01"/>
@@ -1983,9 +2002,26 @@
     <field name="diff"         type="float"/>
   </message>
 
- <!--222 is free -->
+  <message name="OF_STATE" id="222">
+    <field name="state_phi" 	type="float"/>
+    <field name="state_theta" 	type="float"/>
+    <field name="state_psi" 	type="float"/>
+    <field name="state_vx" 	type="float"/>
+    <field name="state_vy" 	type="float"/>
+    <field name="state_vz" 	type="float"/>
+    <field name="state_p" 	type="float"/>
+    <field name="state_q" 	type="float"/>
+    <field name="state_r" 	type="float"/>
+    <field name="state_rpm1" 	type="float"/>
+    <field name="state_rpm2" 	type="float"/>
+    <field name="state_rpm3" 	type="float"/>
+    <field name="state_rpm4" 	type="float"/>
+  </message>
+ 
  <!--223 is free -->
  <!--224 is free -->
+
+
 
   <message name="VIDEO_SYNC" id="225">
     <field name="id" type="uint8"/>
@@ -2040,7 +2076,7 @@
      <field name="value" type="uint16" />
    </message>
 
- <!--233 is free -->
+
    <message name="PX4FLOW" id="233">
      <!--field name="time_usec" type="uint64"/--> <!-- uint64 not supported yet -->
      <field name="sensor_id" type="uint8"/>
@@ -2128,7 +2164,13 @@
     <field name="vz"   type="float" unit="m/s"/>
   </message>
 
-  <!-- 245 is free -->
+  <message name="MOTOR_CMD" id="245">
+     <field name="MOTOR_CMD1"   type="int32" />
+     <field name="MOTOR_CMD2"   type="int32" />
+     <field name="MOTOR_CMD3"   type="int32" />
+     <field name="MOTOR_CMD4"   type="int32" />
+  </message>
+  
   <!-- 246 is free -->
 
   <message name="PPRZ_DEBUG" id="247">

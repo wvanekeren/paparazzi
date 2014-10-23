@@ -101,7 +101,7 @@ extern void guidance_h_mode_changed(uint8_t new_mode);
 extern void guidance_h_read_rc(bool_t in_flight);
 extern void guidance_h_run(bool_t in_flight);
 
-uint8_t optic_flow_ctrl;
+
 
 
 #define guidance_h_SetKi(_val) {            \
