@@ -7,11 +7,9 @@
       <define name="AUTOPILOT_DISABLE_AHRS_KILL"/>
       <define name="FAILSAFE_DESCENT_SPEED" value="0.5"/>
       <define name="USE_SONAR" value="1"/>
-      <!--define name="INS_SONAR_MAX_RANGE" value="5000"/-->
       <define name="INS_SONAR_VARIANCE_THRESHOLD"/>
       <configure name="USE_MAGNETOMETER" value="0"/>
-
-      <subsystem name="telemetry" type="udp"/>
+      <subsystem name="telemetry" type="transparent_udp"/>
       <subsystem name="radio_control" type="datalink"/>
     </target>
 
@@ -32,27 +30,7 @@
 
   <modules main_freq="512">
     <load name="send_imu_mag_current.xml"/>
-    <!--load name="file_logger.xml"/-->
-    <!--load name="../../sw/ext/ardrone2_vision/modules/Mjpeg/ViewVideo.xml"/-->
     <load name="../../sw/ext/ardrone2_vision/modules/OpticFlowARM/OpticFlowARM.xml"/>
-    <!--load name="../../sw/ext/ardrone2_vision/modules/ImageLogger/ImageLogger.xml"/-->
-    <!--load name="../../sw/ext/ardrone2_vision/modules/OpticFlow3D-DSP/OpticFlow3D-DSP.xml">
-      <define name="ARDRONE_VIDEO_PORT" value="2002" />
-      <define name="USE_ARDRONE_VIDEO" />  
-      <define name="USE_FMS" value="0"/>
-      <define name="OPTIC_FLOW_DSP" value="1"/>
-      <define name="USE_OPTITRACK_Z" value="0"/>
-      <define name="OPTITRACK_POS" value="1"/>
-    </load-->
-    <!--load name="../../sw/ext/ardrone2_vision/modules/OpticFlowDSP/OpticFlowDSP.xml">
-      <define name="ARDRONE_VIDEO_PORT" value="2002" />
-      <define name="USE_ARDRONE_VIDEO" />  
-      <define name="USE_FMS" value="1"/>
-      <define name="OPTIC_FLOW_DSP" value="1"/>
-      <define name="USE_OPTITRACK_Z" value="0"/>
-      <define name="OPTITRACK_POS" value="1"/>
-    </load-->
-
   </modules>
 
   <commands>
@@ -255,7 +233,6 @@
   <section name="AUTOPILOT">
     <define name="MODE_STARTUP" value="AP_MODE_NAV"/>
     <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
-    <!--define name="MODE_AUTO1" value="AP_MODE_ATTITUDE_Z_HOLD"/-->
     <define name="MODE_AUTO1" value="AP_MODE_OPTIC_FLOW"/>
     <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
   </section>

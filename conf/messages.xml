@@ -1942,37 +1942,9 @@
     <field name="Vy_kalman" 	 type="float"/>    
   </message>
 
-  <message name="OF_HIST" id="216">
-    <field name="msg_id"	type="uint8"/>
-    <field name="part_id"	type="uint8"/>
-    <field name="T"     	type="float"/>
-    <field name="Tp"     	type="int32"/>
-    <field name="erreur"    	type="uint32"/>
-    <field name="framesskip"   	type="uint32"/>
-    <field name="profilepart" 	type="uint8[]"/>
-  </message>
-  
-  <message name="OF_FLOWCOMP" id="217">
-    <field name="Vx_kalman" 	type="float"/>
-    <field name="Vy_kalman" 	type="float"/>
-    <field name="Biasx" 	type="float"/>
-    <field name="Biasy" 	type="float"/>
-    <field name="Vkalmanx_pred" type="float"/>
-    <field name="Vkalmany_pred" type="float"/>
-    <field name="Vxm_kalman" 	type="float"/>
-    <field name="Vym_kalma" 	type="float"/>
-    <field name="Axm_kalman" 	type="float"/>
-    <field name="Aym_kalman" 	type="float"/>
-    <field name="dt" 		type="float"/>
-    <field name="P00" 		type="float"/>
-    <field name="P11" 		type="float"/>
-    <field name="P22" 		type="float"/>
-    <field name="P33" 		type="float"/>
-    <field name="Q00" 		type="float"/>
-    <field name="Q11" 		type="float"/>
-    <field name="R00" 		type="float"/>
-    <field name="R11" 		type="float"/>
-  </message>
+  <!--216 is free -->  
+  <!--217 is free -->  
+ 
 
   <message name="OF_CTRL" id="218">
     <field name="cmd_phi" 	type="int32" alt_unit="deg" alt_unit_coef="0.0139882"/>
@@ -2034,8 +2006,6 @@
     <field name="threshold"   	    type="int32"/>
     <field name="erreur"   	    type="uint32"/>
     <field name="FPS"               type="float"/>
-    <field name="h_sonar"  	    type="float"/>
-    <field name="h_sonar_raw"  	    type="float"/>
     <field name="h"  		    type="float"/>
     <field name="msg_id"  	    type="uint8"/>
     <field name="framesskip"  	    type="int32"/>

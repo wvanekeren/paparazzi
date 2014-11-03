@@ -93,19 +93,6 @@ static const int32_t thrust_coef[MOTOR_MIXING_NB_MOTOR] = MOTOR_MIXING_THRUST_CO
 
 struct MotorMixing motor_mixing;
 
-#if PERIODIC_TELEMETRY
-#include "subsystems/datalink/telemetry.h"
-static void send_motor_cmd(void) {
-  DOWNLINK_SEND_MOTOR_CMD(DefaultChannel, DefaultDevice,
-      &motor_mixing.commands[0],
-      &motor_mixing.commands[1],
-      &motor_mixing.commands[2],
-      &motor_mixing.commands[3]);
-}
-
-#endif
-
-
 void motor_mixing_init(void) {
   uint8_t i;
   for (i=0; i<MOTOR_MIXING_NB_MOTOR; i++) {
@@ -119,10 +106,6 @@ void motor_mixing_init(void) {
   }
   motor_mixing.nb_failure = 0;
   motor_mixing.nb_saturation = 0;
-  
-  #if PERIODIC_TELEMETRY
-  register_periodic_telemetry(DefaultPeriodic, "MOTOR_CMD", send_motor_cmd);
-  #endif
 }
 
 __attribute__ ((always_inline)) static inline void offset_commands(int32_t offset) {
