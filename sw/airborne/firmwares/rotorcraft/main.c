@@ -34,15 +34,15 @@
 #include "mcu.h"
 #include "mcu_periph/sys_time.h"
 #include "mcu_periph/i2c.h"
+#if USE_UDP
+#include "mcu_periph/udp.h"
+#endif
 #include "led.h"
 
 #include "subsystems/datalink/telemetry.h"
 #include "subsystems/datalink/datalink.h"
 #include "subsystems/settings.h"
 #include "subsystems/datalink/xbee.h"
-#if DATALINK == UDP
-#include "subsystems/datalink/udp.h"
-#endif
 
 #include "subsystems/commands.h"
 #include "subsystems/actuators.h"
@@ -52,7 +52,6 @@
 
 #include "subsystems/imu.h"
 #include "subsystems/gps.h"
-#include "subsystems/air_data.h"
 
 #if USE_BARO_BOARD
 #include "subsystems/sensors/baro.h"
@@ -152,7 +151,6 @@ STATIC_INLINE void main_init( void ) {
 
   radio_control_init();
 
-  air_data_init();
 #if USE_BARO_BOARD
   baro_init();
 #endif
@@ -175,10 +173,6 @@ STATIC_INLINE void main_init( void ) {
 
 #if DATALINK == XBEE
   xbee_init();
-#endif
-
-#if DATALINK == UDP
-  udp_init();
 #endif
 
   // register the timers for the periodic functions
@@ -282,6 +276,10 @@ STATIC_INLINE void main_event( void ) {
 
   i2c_event();
 
+#if USE_UDP
+  udp_event();
+#endif
+
   DatalinkEvent();
 
   if (autopilot_rc) {
@@ -307,16 +305,45 @@ STATIC_INLINE void main_event( void ) {
 }
 
 static inline void on_accel_event( void ) {
-  ImuScaleAccel(imu);
+#if USE_AUTO_AHRS_FREQ || !defined(AHRS_CORRECT_FREQUENCY)
+PRINT_CONFIG_MSG("Calculating dt for AHRS accel update.")
+  // timestamp in usec when last callback was received
+  static uint32_t last_ts = 0;
+  // current timestamp
+  uint32_t now_ts = get_sys_time_usec();
+  // dt between this and last callback
+  float dt = (float)(now_ts - last_ts) / 1e6;
+  last_ts = now_ts;
+#else
+PRINT_CONFIG_MSG("Using fixed AHRS_CORRECT_FREQUENCY for AHRS accel update.")
+PRINT_CONFIG_VAR(AHRS_CORRECT_FREQUENCY)
+  const float dt = 1. / (AHRS_CORRECT_FREQUENCY);
+#endif
+
+  imu_scale_accel(&imu);
 
   if (ahrs.status != AHRS_UNINIT) {
-    ahrs_update_accel();
+    ahrs_update_accel(dt);
   }
 }
 
 static inline void on_gyro_event( void ) {
+#if USE_AUTO_AHRS_FREQ || !defined(AHRS_PROPAGATE_FREQUENCY)
+PRINT_CONFIG_MSG("Calculating dt for AHRS/INS propagation.")
+  // timestamp in usec when last callback was received
+  static uint32_t last_ts = 0;
+  // current timestamp
+  uint32_t now_ts = get_sys_time_usec();
+  // dt between this and last callback in seconds
+  float dt = (float)(now_ts - last_ts) / 1e6;
+  last_ts = now_ts;
+#else
+PRINT_CONFIG_MSG("Using fixed AHRS_PROPAGATE_FREQUENCY for AHRS/INS propagation.")
+PRINT_CONFIG_VAR(AHRS_PROPAGATE_FREQUENCY)
+  const float dt = 1. / (AHRS_PROPAGATE_FREQUENCY);
+#endif
 
-  ImuScaleGyro(imu);
+  imu_scale_gyro(&imu);
 
   if (ahrs.status == AHRS_UNINIT) {
     ahrs_aligner_run();
@@ -324,11 +351,11 @@ static inline void on_gyro_event( void ) {
       ahrs_align();
   }
   else {
-    ahrs_propagate();
+    ahrs_propagate(dt);
 #ifdef SITL
     if (nps_bypass_ahrs) sim_overwrite_ahrs();
 #endif
-    ins_propagate();
+    ins_propagate(dt);
   }
 #ifdef USE_VEHICLE_INTERFACE
   vi_notify_imu_available();
@@ -345,13 +372,28 @@ static inline void on_gps_event(void) {
 }
 
 static inline void on_mag_event(void) {
-  ImuScaleMag(imu);
+  imu_scale_mag(&imu);
 
 #if USE_MAGNETOMETER
-  if (ahrs.status == AHRS_RUNNING) {
-    ahrs_update_mag();
-  }
+#if USE_AUTO_AHRS_FREQ || !defined(AHRS_MAG_CORRECT_FREQUENCY)
+PRINT_CONFIG_MSG("Calculating dt for AHRS mag update.")
+  // timestamp in usec when last callback was received
+  static uint32_t last_ts = 0;
+  // current timestamp
+  uint32_t now_ts = get_sys_time_usec();
+  // dt between this and last callback in seconds
+  float dt = (float)(now_ts - last_ts) / 1e6;
+  last_ts = now_ts;
+#else
+PRINT_CONFIG_MSG("Using fixed AHRS_MAG_CORRECT_FREQUENCY for AHRS mag update.")
+PRINT_CONFIG_VAR(AHRS_MAG_CORRECT_FREQUENCY)
+  const float dt = 1. / (AHRS_MAG_CORRECT_FREQUENCY);
 #endif
+
+  if (ahrs.status == AHRS_RUNNING) {
+    ahrs_update_mag(dt);
+  }
+#endif // USE_MAGNETOMETER
 
 #ifdef USE_VEHICLE_INTERFACE
   vi_notify_mag_available();

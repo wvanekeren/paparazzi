@@ -37,7 +37,7 @@
 #include BOARD_CONFIG
 
 #ifndef SYS_TIME_NB_TIMER
-#define SYS_TIME_NB_TIMER 8
+#define SYS_TIME_NB_TIMER 16
 #endif
 
 
@@ -118,7 +118,7 @@ static inline bool_t sys_time_check_and_ack_timer(tid_t id) {
 
 /**
  * Get the time in seconds since startup.
- * @return current system time as float
+ * @return current system time as float with sys_time.resolution
  */
 static inline float get_sys_time_float(void) {
   return (float)(sys_time.nb_sec + (float)(sys_time.nb_sec_rem) / sys_time.cpu_ticks_per_sec);
