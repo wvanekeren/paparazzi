@@ -34,7 +34,7 @@
     <load name="send_imu_mag_current.xml"/>
     <!--load name="file_logger.xml"/-->
     <!--load name="../../sw/ext/ardrone2_vision/modules/Mjpeg/ViewVideo.xml"/-->
-    <!--load name="../../sw/ext/ardrone2_vision/modules/OpticFlowARM/OpticFlowARM.xml"/-->
+    <load name="../../sw/ext/ardrone2_vision/modules/OpticFlowARM/OpticFlowARM.xml"/>
     <!--load name="../../sw/ext/ardrone2_vision/modules/ImageLogger/ImageLogger.xml"/-->
     <!--load name="../../sw/ext/ardrone2_vision/modules/OpticFlow3D-DSP/OpticFlow3D-DSP.xml">
       <define name="ARDRONE_VIDEO_PORT" value="2002" />
