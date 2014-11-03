@@ -1347,6 +1347,26 @@
     <field name="optic_flow_ctrl"   type="uint8"/>
     <field name="Ahx"  		    type="float"/>
     <field name="Ahy"  		    type="float"/>
+    <!-- kalman part -->
+    <field name="Vx_kalman" 	type="float"/>
+    <field name="Vy_kalman" 	type="float"/>
+    <field name="Biasx" 	type="float"/>
+    <field name="Biasy" 	type="float"/>
+    <field name="Vkalmanx_pred" type="float"/>
+    <field name="Vkalmany_pred" type="float"/>
+    <field name="Vxm_kalman" 	type="float"/>
+    <field name="Vym_kalman" 	type="float"/>
+    <field name="Axm_kalman" 	type="float"/>
+    <field name="Aym_kalman" 	type="float"/>
+    <field name="dt" 		type="float"/>
+    <field name="P00" 		type="float"/>
+    <field name="P11" 		type="float"/>
+    <field name="P22" 		type="float"/>
+    <field name="P33" 		type="float"/>
+    <field name="Q00" 		type="float"/>
+    <field name="Q11" 		type="float"/>
+    <field name="R00" 		type="float"/>
+    <field name="R11" 		type="float"/>    
   </message>
 
   <message name="GUIDANCE_H_REF_INT" id="149">
@@ -1966,6 +1986,8 @@
     <field name="Vy_compl_m"     type="float"/>
     <field name="Vx_compl_f"     type="float"/>
     <field name="Vy_compl_f"     type="float"/>
+    <field name="Vx_kalman" 	 type="float"/>
+    <field name="Vy_kalman" 	 type="float"/>    
   </message>
 
   <message name="OF_HIST" id="216">
@@ -1979,10 +2001,25 @@
   </message>
   
   <message name="OF_FLOWCOMP" id="217">
-    <field name="Tx"	 type="float"/>
-    <field name="Ty"	 type="float"/>
-    <field name="T3x"    type="float"/>
-    <field name="T3y"    type="float"/>
+    <field name="Vx_kalman" 	type="float"/>
+    <field name="Vy_kalman" 	type="float"/>
+    <field name="Biasx" 	type="float"/>
+    <field name="Biasy" 	type="float"/>
+    <field name="Vkalmanx_pred" type="float"/>
+    <field name="Vkalmany_pred" type="float"/>
+    <field name="Vxm_kalman" 	type="float"/>
+    <field name="Vym_kalma" 	type="float"/>
+    <field name="Axm_kalman" 	type="float"/>
+    <field name="Aym_kalman" 	type="float"/>
+    <field name="dt" 		type="float"/>
+    <field name="P00" 		type="float"/>
+    <field name="P11" 		type="float"/>
+    <field name="P22" 		type="float"/>
+    <field name="P33" 		type="float"/>
+    <field name="Q00" 		type="float"/>
+    <field name="Q11" 		type="float"/>
+    <field name="R00" 		type="float"/>
+    <field name="R11" 		type="float"/>
   </message>
  <!--218 is free -->
   <message name="WEATHER" id="219">
@@ -2002,22 +2039,10 @@
     <field name="diff"         type="float"/>
   </message>
 
-  <message name="OF_STATE" id="222">
-    <field name="state_phi" 	type="float"/>
-    <field name="state_theta" 	type="float"/>
-    <field name="state_psi" 	type="float"/>
-    <field name="state_vx" 	type="float"/>
-    <field name="state_vy" 	type="float"/>
-    <field name="state_vz" 	type="float"/>
-    <field name="state_p" 	type="float"/>
-    <field name="state_q" 	type="float"/>
-    <field name="state_r" 	type="float"/>
-    <field name="state_rpm1" 	type="float"/>
-    <field name="state_rpm2" 	type="float"/>
-    <field name="state_rpm3" 	type="float"/>
-    <field name="state_rpm4" 	type="float"/>
-  </message>
+
  
+  
+ <!--222 is free -->
  <!--223 is free -->
  <!--224 is free -->
 
@@ -2171,7 +2196,7 @@
      <field name="MOTOR_CMD4"   type="int32" />
   </message>
   
-  <!-- 246 is free -->
+ <!--246 is free -->
 
   <message name="PPRZ_DEBUG" id="247">
     <field name="module"   type="uint8"/>

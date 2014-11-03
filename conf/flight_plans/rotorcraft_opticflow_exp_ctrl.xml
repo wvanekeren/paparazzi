@@ -3,7 +3,7 @@
 <flight_plan alt="2" ground_alt="0" lat0="51.990634" lon0="4.376771" max_dist_from_home="150" name="Rotorcraft Basic (Enac)" security_height="1">
   <header>
 #include "autopilot.h"
-#include "../../../ext/ardrone2_vision/modules/OpticFlowARM/opticflow_module.h"
+
 </header>
   <waypoints>
     <waypoint name="HOME" x="0.0" y="0.0"/>

@@ -18,6 +18,8 @@
     <waypoint lat="51.9906546" lon="4.3767775" name="notext"/>
     <waypoint lat="51.9906431" lon="4.3767593" name="coarsetext"/>
     <waypoint lat="51.9906403" lon="4.3767901" name="finetext"/>    
+    <waypoint lat="51.9906399" lon="4.3767521" name="stickers"/>    
+    <waypoint lat="51.9906522" lon="4.3767788" name="clean"/>    
   </waypoints>
   <sectors>
     <sector color="red" name="Flight_Area">
@@ -56,23 +58,21 @@
     <block name="Standby" strip_button="Standby" strip_icon="home.png">
       <stay wp="STDBY"/>
     </block>
-
     <block name="go to height 1">
-      <stay   alt="1.0" until="stage_time > 5" wp="HOME"/>
-    </block>
-    <block name="circle height 1">
-      <circle alt="1.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
-    </block>
+      <stay   alt="0.5" until="stage_time > 5" wp="stickers"/>
+    </block>  
+    <block name="Stickers, 1.5 m">
+      <stay   alt="1.5" wp="stickers"/>
+    </block>   
     <block name="circle height 2">
-      <circle alt="2.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
+      <circle alt="1.5" wp="stickers" radius="0.5" until="stage_time > 20"/>
     </block>    
     <block name="circle height 3">
-      <circle alt="3.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
+      <circle alt="2.0" wp="stickers" radius="0.5" until="stage_time > 20"/>
     </block>
-    <block name="circle height 4">
-      <circle alt="4.0" wp="HOME" radius="0.5" until="stage_time > 20"/>
-    </block>    
-
+    <block name="Stickers2, 1.5 m">
+      <stay   alt="2.0" wp="stickers"/>
+    </block> 
     <block key="l" name="land here" strip_button="Land Here" strip_icon="land-right.png">
       <call fun="NavSetWaypointHere(WP_TD)"/>
     </block>
