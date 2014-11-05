@@ -30,7 +30,7 @@
 
   <modules main_freq="512">
     <load name="send_imu_mag_current.xml"/>
-    <load name="../../sw/ext/ardrone2_vision/modules/OpticFlowARM/OpticFlowARM.xml"/>
+    <load name="../../sw/ext/ardrone2_vision/modules/OpticFlowHist/OpticFlowHist.xml"/>
   </modules>
 
   <commands>
